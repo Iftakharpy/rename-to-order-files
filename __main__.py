@@ -4,11 +4,11 @@ from pathlib import Path
 import configs
 from arg_parser import parsed_args
 
-print(parsed_args)
+
 def get_file_number(
     file_path: Path,
     file_num_regex: re.Pattern = parsed_args.file_num_regex,
-    file_num_group_name: re.Match = configs.FILE_NUM_GROUP_NAME
+    file_num_group_name: re.Match = configs.FILE_NUM_GROUP_NAME,
 ) -> int:
     # Find file number from file name
     match = file_num_regex.search(file_path.name)
@@ -45,7 +45,7 @@ def get_file_path(
 def filter_and_rename_files(
     parent_path: Path = parsed_args.path,
     file_extensions: set[str] = set(parsed_args.file_extensions),
-    is_recursive: bool = parsed_args.recursive
+    is_recursive: bool = parsed_args.recursive,
 ) -> None:
     max_file_number = 0
     files_to_rename: list[Path] = []
@@ -64,7 +64,7 @@ def filter_and_rename_files(
                 for extension in extensions:
                     extension = extension[1:]
                     if extension in file_extensions:
-                        # Add path to rename candidate when file 
+                        # Add path to rename candidate when file
                         # extension is in specified file extensions
                         files_to_rename.append(path)
                         max_file_number = max(file_num, max_file_number)
@@ -74,7 +74,7 @@ def filter_and_rename_files(
 
     for file in files_to_rename:
         new_file_path = get_file_path(file, max_file_number)
-        print("Renaming", file.name, 'to', new_file_path.name)
+        print("Renaming", file.name, "to", new_file_path.name)
         file.rename(new_file_path)
 
 
